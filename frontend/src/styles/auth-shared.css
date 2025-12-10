@@ -66,7 +66,7 @@ form.auth-form { display: flex; flex-direction: column; gap: var(--space-4); }
   outline: none;
   color: var(--color-text);
   transition: border-color var(--transition-base), background var(--transition-base), box-shadow var(--transition-base);
-  width: 100%;
+  width: 93%;
   min-width: 0; /* allow shrinking inside flex parent */
 }
 
