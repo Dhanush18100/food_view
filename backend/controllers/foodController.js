@@ -29,44 +29,45 @@ async function getFoodItems(req,res){
     res.status(200).json({message:"Food items fetched successfully",foodItems})
 }
 
-async function likeFood(req,res) {
-    const {foodId}=req.body;
+async function likeFood(req, res) {
+    const { foodId } = req.body;
+    const user = req.user;
 
-    const user=req.user;
+    const isAlreadyLiked = await likeModel.findOne({ user: user._id, food: foodId });
 
-    const isAlreadyLiked=await likeModel.findOne({
-        user:user._id,
-        food:foodId
-    })
-    if(isAlreadyLiked){
-        await likeModel.deleteOne({
-        user:user._id,
-        food:foodId
-        })
-    
-    await foodModel.findByIdAndUpdate(foodId,{
-        $inc:{likeCount:-1}
-    })
-    return res.status(201).json({
-        message:"Food unliked successfully"
-    })
-}
+    if (isAlreadyLiked) {
+        await likeModel.deleteOne({ user: user._id, food: foodId });
 
-    const like=await likeModel.create({
-        user:user._id,
-        food:foodId
-    })
-    await foodModel.findByIdAndUpdate(foodId,{
-        $inc:{likeCount:1}
-    })
-    
+        const updated = await foodModel.findByIdAndUpdate(
+            foodId,
+            { $inc: { likeCount: -1 } },
+            { new: true }
+        );
+
+        return res.status(200).json({
+            liked: false,
+            likeCount: updated.likeCount
+        });
+    }
+
+    await likeModel.create({ user: user._id, food: foodId });
+
+    const updated = await foodModel.findByIdAndUpdate(
+        foodId,
+        { $inc: { likeCount: 1 } },
+        { new: true }
+    );
+
     res.status(201).json({
-        message:"Food liked successfully",like
-    })
-    
+        liked: true,
+        likeCount: updated.likeCount
+    });
 }
-async function saveFood(req,res) {
-     const { foodId } = req.body;
+
+
+async function saveFood(req, res) {
+
+    const { foodId } = req.body;
     const user = req.user;
 
     const isAlreadySaved = await saveModel.findOne({
@@ -104,6 +105,7 @@ async function saveFood(req,res) {
     })
 
 }
+
 async function getSaveFood(req, res) {
 
     const user = req.user;
@@ -121,12 +123,11 @@ async function getSaveFood(req, res) {
 
 }
 
-module.exports={
+
+module.exports = {
     createFood,
     getFoodItems,
     likeFood,
     saveFood,
     getSaveFood
-
-
 }

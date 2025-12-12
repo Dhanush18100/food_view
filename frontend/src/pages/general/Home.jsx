@@ -18,13 +18,14 @@ const Home = () => {
             .catch(() => { /* noop: optionally handle error */ })
     }, [])
 
-    // Using local refs within ReelFeed; keeping map here for dependency parity if needed
-
+    
+    
     async function likeVideo(item) {
-
+        
         const response = await axios.post("http://localhost:3000/api/food/like", { foodId: item._id }, {withCredentials: true})
-
-        if(response.data.like){
+        
+        console.log("Food items UI received:", response.data.foodItems);
+        if(response.data.liked){
             console.log("Video liked");
             setVideos((prev) => prev.map((v) => v._id === item._id ? { ...v, likeCount: v.likeCount + 1 } : v))
         }else{
