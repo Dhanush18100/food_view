@@ -25,7 +25,7 @@ const Home = () => {
         const response = await axios.post(import.meta.env.VITE_BACKENDURL+"/api/food/like", { foodId: item._id }, {withCredentials: true})
         
         console.log("Food items UI received:", response.data.foodItems);
-        if(response.data.liked){
+        if(response.data.like){
             console.log("Video liked");
             setVideos((prev) => prev.map((v) => v._id === item._id ? { ...v, likeCount: v.likeCount + 1 } : v))
         }else{

@@ -37,7 +37,7 @@ async function likeFood(req, res) {
         user: user._id,
         food: foodId
     })
-
+console.log("isAlreadyLiked:", isAlreadyLiked);
     if (isAlreadyLiked) {
         await likeModel.deleteOne({
             user: user._id,

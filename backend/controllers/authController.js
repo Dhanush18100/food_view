@@ -164,8 +164,29 @@ async function logoutFoodPartner(req,res) {
     
 }
 
+async function checkLogin(req, res) {
+    try {
+        if (req.user) {
+            return res.status(200).json({
+                loggedIn: true,
+                user: req.user
+            });
+        }
+
+        res.status(200).json({
+            loggedIn: false
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            message: "Error checking login"
+        });
+    }
+}
 
 
 
 
-module.exports={registerUser,loginUser,logoutUser,registerFoodPartner,loginFoodPartner,logoutFoodPartner}
+
+
+module.exports={registerUser,loginUser,logoutUser,registerFoodPartner,loginFoodPartner,logoutFoodPartner,checkLogin}
