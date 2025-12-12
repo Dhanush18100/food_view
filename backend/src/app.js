@@ -13,9 +13,13 @@ const app=express();//server start in server.js
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-    origin:"https://food-view-frontend.onrender.com",
-    credentials:true,
-}))
+  origin: [
+    "http://localhost:5173",
+    "https://food-view-frontend.onrender.com"
+  ],
+  credentials: true
+}));
+
 
 app.get("/",(req,res)=>{
     res.send("Hello World");
