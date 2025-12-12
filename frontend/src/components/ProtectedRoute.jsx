@@ -10,7 +10,7 @@ const ProtectedRoute = ({ children }) => {
     const checkLogin = async () => {
       try {
         const res = await axios.get(
-          "https://your-backend-url.onrender.com/api/auth/check",
+          "https://food-view-backend.onrender.com/api/auth/check",
           { withCredentials: true }
         );
 
